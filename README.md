@@ -1,19 +1,57 @@
 # KiCad Template
 
-A shared drawing sheet, color theme and project layout for hardware projects. It
-is meant to be pulled into a board repository as a submodule, so every project
-ends up with the same title block, the same look and the same folder structure.
+A shared project template, drawing sheet, color theme and project layout for
+hardware projects. It is meant to be pulled into a board repository as a
+submodule, so every project ends up with the same first sheets, the same title
+block, the same look and the same folder structure.
 
 ```
 kicad-template/
 ├── .gitignore                         # KiCad ignore rules, copy into the board repo
+├── board-template/                    # KiCad project template, see below
 ├── colors/
 │   └── altium.json                    # KiCad color theme, Altium-like
 └── worksheet/
     └── sleman_template.kicad_wks      # drawing sheet / title block
 ```
 
+## Project template
+
+`board-template/` is a KiCad project template holding the three sheets every
+board starts with:
+
+| Page | Sheet | Content |
+| --- | --- | --- |
+| 1 | root | cover page: 40-entry index, state legend, notes, design considerations |
+| 2 | `sheet2.kicad_sch` | block diagram, six placeholder blocks |
+| 3 | `sheet3.kicad_sch` | power budget, empty rail table |
+
+Starting a board:
+
+1. Create the repository with an empty `hardware/` folder and add this repo as a
+   submodule under `external/kicad-template`.
+2. **File > New Project from Template**, click **Select Templates Directory**
+   and pick the clone of this repo. Choose **board-template**. KiCad lists every
+   subfolder of the directory it is given, so `colors/` and `worksheet/` show up
+   next to it; ignore them.
+3. In the file dialog, navigate into `hardware/`, type the board name and
+   **untick "Create a new folder for the project"**. The project files land
+   straight in `hardware/`, renamed after the board.
+4. Fill in Page Settings and the text variables below, then edit the index on
+   the cover page as sheets are added.
+
+The template ships `sym-lib-table` and `fp-lib-table` pointing at
+`${KICAD_MYLIB}`, so define that path once per machine under
+**Preferences > Configure Paths**.
+
+The index on the cover page is plain text: page numbers and dotted lines are not
+linked to the real sheets, so both have to be typed by hand.
+
 ## Drawing sheet
+
+A project started from `board-template/` already has step 1 and 3 done and the
+variables filled with placeholders; the steps below are the full setup, for
+projects that did not start from the template.
 
 1. **Point the project at the sheet.** In the schematic editor go to
    **File > Page Settings** and set **Page Layout Description File** to:
@@ -40,11 +78,15 @@ kicad-template/
    | Comment 3 | Company URL |
 
 3. **Add the text variables.** Go to **Schematic Setup > Project > Text
-   Variables** and create these three:
+   Variables** and create these five:
 
-   - `DESIGNER`
-   - `VARIANT`
-   - `YEAR`
+   | Variable | Content | Used by |
+   | --- | --- | --- |
+   | `DESIGNER` | Who drew the board | drawing sheet |
+   | `RELEASE_DATE` | Date of the current state, `DD-MMM-YYYY` | cover page |
+   | `STATE` | `DRAFT`, `PRELIMINARY`, `CHECKED` or `RELEASED` | cover page |
+   | `VARIANT` | Assembly variant, or `NO VARIANT` | drawing sheet, cover page |
+   | `YEAR` | Copyright year | drawing sheet |
 
    Text variables are stored per project, not per file, so adding them once in
    the schematic editor makes them available to the PCB editor too.
@@ -84,8 +126,10 @@ board-name/
 │   └── design-notes.md        # decisions, calculations, derating
 ├── hardware/
 │   ├── board-name.kicad_pro
-│   ├── board-name.kicad_sch
+│   ├── board-name.kicad_sch   # cover page
 │   ├── board-name.kicad_pcb
+│   ├── sheet2.kicad_sch       # block diagram
+│   ├── sheet3.kicad_sch       # power budget
 │   ├── sym-lib-table          # points at the library submodule
 │   ├── fp-lib-table
 │   ├── schematic/             # exported schematic PDFs, versioned
