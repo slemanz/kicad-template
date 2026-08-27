@@ -24,7 +24,19 @@ board starts with:
 | --- | --- | --- |
 | 1 | root | cover page: 40-entry index, state legend, notes, design considerations |
 | 2 | `sheet2.kicad_sch` | block diagram, six placeholder blocks |
-| 3 | `sheet3.kicad_sch` | power budget, empty rail table |
+| 3 | `sheet3.kicad_sch` | power budget, power tree with the load on each branch |
+
+Both diagrams use the same palette. Block fill says what the block is:
+
+| Fill | Block |
+| --- | --- |
+| pale yellow `255 255 194` | connector or off-board interface |
+| dark gray `72 72 72` | circuit drawn on this board, white text |
+| light gray `194 194 194` | main device |
+
+Line color says what the line carries: dark red `132 0 0` unregulated input,
+red `255 0 0` regulated rail, blue `0 0 132` data. Stroke `0.5` on blocks,
+`1.5` on lines.
 
 Starting a board:
 
