@@ -176,3 +176,27 @@ board-name/
 
 Releases are tagged per side, `v1.0-hw` and `v1.2-fw`, and `CHANGELOG.md` notes
 which firmware version each board revision was tested with.
+
+## Command line exports
+
+`kicad-cli` renders views and runs checks without opening the GUI. Run it from
+`hardware/` and write into `hardware/output/`, which is regenerable and can be
+gitignored.
+
+```bash
+kicad-cli pcb render -o output/board-name-3d-top.png --side top \
+  --width 2400 --height 1600 --quality basic board-name.kicad_pcb
+
+kicad-cli pcb drc --format json --severity-all --schematic-parity \
+  -o output/drc.json board-name.kicad_pcb
+```
+
+Use `--side bottom` for the other view. PNG output is transparent by default,
+`--quality basic` takes about a second against fifteen for `high`, and `--floor`
+has to stay off or the shadow fills the background. Spell out `--height`, `-h`
+is taken by `--help`.
+
+Read the DRC report as JSON: each violation quotes the constraint it resolved,
+which is what a custom rule in `.kicad_dru` has to target. A silkscreen error
+reporting `silk clearance 0.1500 mm` is only silenced by a rule constraining
+`silk_clearance`, not `edge_clearance`.
