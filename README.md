@@ -17,51 +17,43 @@ kicad-template/
 
 ## Project template
 
-`board-template/` is a KiCad project template holding the three sheets every
+board-template/ is a KiCad project template holding the three sheets every
 board starts with:
 
 | Page | Sheet | Content |
 | --- | --- | --- |
 | 1 | root | cover page: 40-entry index, state legend, notes, design considerations |
-| 2 | `sheet2.kicad_sch` | block diagram, six placeholder blocks |
-| 3 | `sheet3.kicad_sch` | power budget, power tree with the load on each branch |
+| 2 | sheet2.kicad_sch | block diagram, six placeholder blocks |
+| 3 | sheet3.kicad_sch | power budget, power tree with the load on each branch |
 
 Both diagrams use the same palette. Block fill says what the block is:
 
 | Fill | Block |
 | --- | --- |
-| pale yellow `255 255 194` | connector or off-board interface |
-| dark gray `72 72 72` | circuit drawn on this board, white text |
-| light gray `194 194 194` | main device |
-
-Line color says what the line carries: dark red `132 0 0` unregulated input,
-red `255 0 0` regulated rail, blue `0 0 132` data. Stroke `0.5` on blocks,
-`1.5` on lines.
+| pale yellow (255, 255, 194) | connector or off-board interface |
+| dark gray (72, 72, 72) | circuit drawn on this board, white text |
+| light gray (194, 194, 194) | main device |
 
 Starting a board:
 
-1. Create the repository with an empty `hardware/` folder and add this repo as a
-   submodule under `external/kicad-template`.
+1. Create the repository with an empty hardware/ folder and add this repo as a
+   submodule under external/kicad-template.
 2. **File > New Project from Template**, click **Select Templates Directory**
-   and pick the clone of this repo. Choose **board-template**. KiCad lists every
-   subfolder of the directory it is given, so `colors/` and `worksheet/` show up
-   next to it; ignore them.
-3. In the file dialog, navigate into `hardware/`, type the board name and
-   **untick "Create a new folder for the project"**. The project files land
-   straight in `hardware/`, renamed after the board.
+   and pick the clone of this repo. Choose **board-template**. 
+3. In the file dialog, navigate into hardware/, type the board name and
+   **untick "Create a new folder for the project"**. 
 4. Fill in Page Settings and the text variables below, then edit the index on
    the cover page as sheets are added.
 
-The template ships `sym-lib-table` and `fp-lib-table` pointing at
-`${KICAD_MYLIB}`, so define that path once per machine under
-**Preferences > Configure Paths**.
+The template ships sym-lib-table and fp-lib-table pointing at `${KICAD_MYLIB}`,
+so define that path once per machine under **Preferences > Configure Paths**.
 
 The index on the cover page is plain text: page numbers and dotted lines are not
 linked to the real sheets, so both have to be typed by hand.
 
 ## Drawing sheet
 
-A project started from `board-template/` already has step 1 and 3 done and the
+A project started from board-template/ already has step 1 and 3 done and the
 variables filled with placeholders; the steps below are the full setup, for
 projects that did not start from the template.
 
@@ -72,8 +64,8 @@ projects that did not start from the template.
    ${KIPRJMOD}/../external/kicad-template/worksheet/sleman_template.kicad_wks
    ```
 
-   `${KIPRJMOD}` is the folder holding the `.kicad_pro`, so the path above
-   assumes the KiCad files live in `hardware/` and the submodule in `external/`.
+   `${KIPRJMOD}` is the folder holding the .kicad_pro, so the path above
+   assumes the KiCad files live in hardware/ and the submodule in external/.
    Adjust it if the layout differs. Repeat the same step in the PCB editor under
    **File > Page Settings**.
 
@@ -85,27 +77,22 @@ projects that did not start from the template.
    | Revision | Current board revision |
    | Title | Board name |
    | Company | Company or organization |
-   | Comment 1 | `For more designs, visit` |
-   | Comment 2 | Personal website or portfolio URL |
-   | Comment 3 | Company URL |
+   | Comment 1 | For more designs, visit URL |
 
 3. **Add the text variables.** Go to **Schematic Setup > Project > Text
    Variables** and create these five:
 
-   | Variable | Content | Used by |
+   | **Variable** | **Content** | **Used by** |
    | --- | --- | --- |
-   | `DESIGNER` | Who drew the board | drawing sheet |
-   | `RELEASE_DATE` | Date of the current state, `DD-MMM-YYYY` | cover page |
-   | `STATE` | `DRAFT`, `PRELIMINARY`, `CHECKED` or `RELEASED` | cover page |
-   | `VARIANT` | Assembly variant, or `NO VARIANT` | drawing sheet, cover page |
-   | `YEAR` | Copyright year | drawing sheet |
-
-   Text variables are stored per project, not per file, so adding them once in
-   the schematic editor makes them available to the PCB editor too.
+   | **DESIGNER** | Who drew the board | drawing sheet |
+   | **RELEASE_DATE** | Date of the current state, DD-MMM-YYYY | cover page |
+   | **STATE** | DRAFT, PRELIMINARY, CHECKED or RELEASED | cover page |
+   | **VARIANT** | Assembly variant, or "NO VARIANT" | drawing sheet, cover page |
+   | **YEAR** | Copyright year | drawing sheet |
 
 ## Color theme
 
-`colors/altium.json` gives the schematic editor, PCB editor and 3D viewer an
+colors/altium.json gives the schematic editor, PCB editor and 3D viewer an
 Altium-like appearance: pale yellow symbol bodies with maroon outlines on a white
 sheet, and a black PCB canvas with a red top layer, blue bottom layer and yellow
 silkscreen. Themes are stored per user instead of per project, so the file cannot
@@ -116,12 +103,6 @@ travel inside the project and has to be copied once per machine into:
 | Linux | `~/.config/kicad/9.0/colors/` |
 | Windows | `%APPDATA%\kicad\9.0\colors\` |
 
-Restart KiCad and select **altium** under **Preferences > Schematic Editor >
-Colors** and again under **Preferences > PCB Editor > Colors**. The pale yellow
-body fill only renders on shapes whose fill is set to `Background`, so any symbol
-drawn with fill `None`, which includes most of the stock `Device` library, stays
-transparent until it is changed in the Symbol Editor.
-
 ## Project layout
 
 The structure used on every board.
@@ -130,7 +111,7 @@ The structure used on every board.
 board-name/
 ├── .gitmodules
 ├── .gitignore
-├── README.md                  # what the board is, current rev, how to build it
+├── README.md
 ├── LICENSE
 ├── CHANGELOG.md               # one entry per revision
 ├── docs/
@@ -145,9 +126,8 @@ board-name/
 │   ├── sym-lib-table          # points at the library submodule
 │   ├── fp-lib-table
 │   ├── schematic/             # exported schematic PDFs, versioned
-│   ├── simulation/
 │   └── production/
-│       └── v1.0/              # gerbers, drill, BOM, CPL, PDF, STEP
+│       └── rev-a/              # gerbers, drill, BOM, CPL, PDF, STEP
 ├── mechanical/                # enclosure, assembly STEP
 └── external/                  # every submodule lives here
     ├── kicad-lib/
@@ -174,13 +154,10 @@ board-name/
 └── ...
 ```
 
-Releases are tagged per side, `v1.0-hw` and `v1.2-fw`, and `CHANGELOG.md` notes
-which firmware version each board revision was tested with.
-
 ## Command line exports
 
 `kicad-cli` renders views and runs checks without opening the GUI. Run it from
-`hardware/` and write into `hardware/output/`, which is regenerable and can be
+hardware/ and write into hardware/output/, which is regenerable and can be
 gitignored.
 
 ```bash
@@ -191,12 +168,7 @@ kicad-cli pcb drc --format json --severity-all --schematic-parity \
   -o output/drc.json board-name.kicad_pcb
 ```
 
-Use `--side bottom` for the other view. PNG output is transparent by default,
-`--quality basic` takes about a second against fifteen for `high`, and `--floor`
-has to stay off or the shadow fills the background. Spell out `--height`, `-h`
-is taken by `--help`.
-
-Read the DRC report as JSON: each violation quotes the constraint it resolved,
-which is what a custom rule in `.kicad_dru` has to target. A silkscreen error
-reporting `silk clearance 0.1500 mm` is only silenced by a rule constraining
-`silk_clearance`, not `edge_clearance`.
+Use "--side bottom" for the other view. PNG output is transparent by default,
+"--quality basic" takes about a second against fifteen for "high", and "--floor"
+has to stay off or the shadow fills the background. Spell out "--height", "-h"
+is taken by "--help".
